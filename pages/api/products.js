@@ -1,41 +1,37 @@
-import { mongooseConnect } from "@/lib/mongoose";
-import { Product } from "@/models/Product";
+import {Product} from "@/models/Product";
+import {mongooseConnect} from "@/lib/mongoose";
+
 
 export default async function handle(req, res) {
-  const { method } = req;
+  const {method} = req;
   await mongooseConnect();
 
-  if (method === "GET") {
-	if(req.query?.id) {
-		res.json(await Product.findOne({_id:req.query.id}))
-	} else {
-
-		res.json(await Product.find());
-
-	}
+  if (method === 'GET') {
+    if (req.query?.id) {
+      res.json(await Product.findOne({_id:req.query.id}));
+    } else {
+      res.json(await Product.find());
+    }
   }
-  if (method === "POST") {
-    const { tittle, description, price,images,category } = req.body;
+
+  if (method === 'POST') {
+    const {title,description,price,images,category,properties} = req.body;
     const productDoc = await Product.create({
-      tittle,
-      description,
-      price,
-	  images,
-	  category,
-    });
+      title,description,price,images,category,properties,
+    })
     res.json(productDoc);
   }
 
   if (method === 'PUT') {
-	const {tittle, description,price,images,category,_id}= req.body
-	await Product.updateOne({_id},{tittle,description,price,images,category,})
-	res.json(true)
+    const {title,description,price,images,category,properties,_id} = req.body;
+    await Product.updateOne({_id}, {title,description,price,images,category,properties});
+    res.json(true);
   }
 
   if (method === 'DELETE') {
-	if(req.query?.id) {
-		await Product.deleteOne({_id:req.query?.id})
-		res.json(true)
-	}
+    if (req.query?.id) {
+      await Product.deleteOne({_id:req.query?.id});
+      res.json(true);
+    }
   }
 }
