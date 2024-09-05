@@ -1,7 +1,7 @@
-import {RingLoader} from "react-spinners";
+import {BounceLoader} from "react-spinners";
 
 export default function Spinner() {
   return (
-    <RingLoader color={'#1E3A8A'} speedMultiplier={2} />
+    <BounceLoader color={'#1E3A8A'} speedMultiplier={2} />
   );
 }
